@@ -15,11 +15,11 @@ public class Main {
     private static Document document;
     public static void main(String[] args) {
 
-        System.out.println("Digite una URL: ");
+        System.out.print("Digite una URL: ");
 
        // Scanner scanner = new Scanner(System.in);
 
-        String entrda = "https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Your_first_HTML_form";//scanner.nextLine();
+        String entrda = "http://facebook.com/";//scanner.nextLine();
         //System.out.println("Entrada: " + entrda);
 
         if (validarURL(entrda)) {
@@ -28,7 +28,12 @@ public class Main {
             System.out.println("Cantidad de Parrafos: " + cantidadParrafos(entrda));
             System.out.println("Cantidad de Fotos dentro de parrafos: " + cantidadFotos(entrda));
 
-            cantidadForm(entrda);
+            try {
+                cantidadForm(entrda);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
         else {
@@ -70,7 +75,7 @@ public class Main {
         return cantidad;
     }
 
-    private static void cantidadForm(String url){
+    private static void cantidadForm(String url) throws IOException {
 
         int  cantidadPost =0, cantidadGet =0, form=1;
 
@@ -85,8 +90,18 @@ public class Main {
         Elements elements = document.select("form");
 
         for (Element element:elements) {
-
+            String metodo = element.attr("method");
             System.out.println("Formulario: #"+form);
+
+
+            if (metodo.equalsIgnoreCase("post")){
+
+                Document document1 = Jsoup.connect(url)
+                        .data("asignatura","practica1")
+                        .header("matricula","20140565").post();
+
+                System.out.println(document1);
+            }
 
             Elements inputs = element.select("input");
             for (Element element1: inputs) {
@@ -95,10 +110,8 @@ public class Main {
 
             System.out.println("");
             form++;
-            
-
         }
-
-
     }
+
+
 }
