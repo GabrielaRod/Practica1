@@ -1,3 +1,4 @@
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -106,11 +107,16 @@ public class Main {
 
             if (metodo.equalsIgnoreCase("post")){
 
-                Document document1 = Jsoup.connect(url)
-                        .data("asignatura","practica1")
-                        .header("matricula","20140565").post();
+                try{
+                    Document document1 = Jsoup.connect(url)
+                            .data("asignatura","practica1")
+                            .header("matricula","20140565").post();
 
-                System.out.println(document1);
+                    System.out.println(document1);
+                }catch (HttpStatusException e){
+
+                }
+
             }
 
             Elements inputs = element.select("input");
