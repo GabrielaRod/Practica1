@@ -5,9 +5,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
+import org.jsoup.select.Evaluator;
 
 import javax.print.Doc;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Scanner;
 
 public class Main {
@@ -15,12 +17,12 @@ public class Main {
     private static Document document;
     public static void main(String[] args) {
 
-        System.out.print("Digite una URL: ");
+        System.out.println("Digite una URL: ");
 
-       // Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-        String entrda = "https://www.facebook.com";//scanner.nextLine();
-        //System.out.println("Entrada: " + entrda);
+        String entrda = scanner.nextLine();
+
 
         if (validarURL(entrda)) {
             System.out.println("URL valida!");
@@ -45,11 +47,18 @@ public class Main {
 
         try {
 
+            document = Jsoup.parse(url);
+
             document = Jsoup.connect(url).get();
 
 
+        } catch (MalformedURLException e){
+            return false;
+
         } catch (IOException e) {
             //e.printStackTrace();
+            return false;
+        }catch (IllegalArgumentException e){
             return false;
         }
         return true;
