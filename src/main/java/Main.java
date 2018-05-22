@@ -19,14 +19,14 @@ public class Main {
 
        // Scanner scanner = new Scanner(System.in);
 
-        String entrda = "http://facebook.com/";//scanner.nextLine();
+        String entrda = "https://www.facebook.com";//scanner.nextLine();
         //System.out.println("Entrada: " + entrda);
 
         if (validarURL(entrda)) {
             System.out.println("URL valida!");
-
-            System.out.println("Cantidad de Parrafos: " + cantidadParrafos(entrda));
-            System.out.println("Cantidad de Fotos dentro de parrafos: " + cantidadFotos(entrda));
+            System.out.println("Cantidad de lineas: " + cantidadLineas());
+            System.out.println("Cantidad de parrafos: " + cantidadParrafos());
+            System.out.println("Cantidad de fotos dentro de parrafos: " + cantidadFotos());
 
             try {
                 cantidadForm(entrda);
@@ -55,9 +55,15 @@ public class Main {
         return true;
     }
 
-        private static int cantidadParrafos(String url) {
+    private static int cantidadLineas(){
 
-        int cantidad = 0;
+
+        return document.html().split("/n").length;
+    }
+
+    private static int cantidadParrafos() {
+
+        int cantidad;
 
         Elements elements = document.select("p");
         cantidad = elements.size();
@@ -65,7 +71,7 @@ public class Main {
         return cantidad;
     }
 
-    private static int cantidadFotos(String url){
+    private static int cantidadFotos(){
 
         int cantidad =0;
 
