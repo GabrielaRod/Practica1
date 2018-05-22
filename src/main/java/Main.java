@@ -1,13 +1,8 @@
-import org.jsoup.Connection;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
-import org.jsoup.select.Evaluator;
 
-import javax.print.Doc;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Scanner;
@@ -82,7 +77,7 @@ public class Main {
 
     private static int cantidadFotos(){
 
-        int cantidad =0;
+        int cantidad;
 
         Elements elements = document.select("p img");
         cantidad = elements.size();
@@ -92,7 +87,7 @@ public class Main {
 
     private static void cantidadForm(String url) throws IOException {
 
-        int  cantidadPost =0, cantidadGet =0, form=1;
+        int  cantidadPost, cantidadGet, form=1;
 
         Elements formElement = document.select("[method=post]");
         cantidadPost = formElement.size();
