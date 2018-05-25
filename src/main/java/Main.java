@@ -1,3 +1,4 @@
+import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,7 +23,7 @@ public class Main {
 
         if (validarURL(entrda)) {
             System.out.println("URL valida!");
-            System.out.println("Cantidad de lineas: " + cantidadLineas());
+            System.out.println("Cantidad de lineas: " + cantidadLineas(entrda));
             System.out.println("Cantidad de parrafos: " + cantidadParrafos());
             System.out.println("Cantidad de fotos dentro de parrafos: " + cantidadFotos());
 
@@ -60,10 +61,18 @@ public class Main {
         return true;
     }
 
-    private static int cantidadLineas(){
+    private static int cantidadLineas(String url){
+        String cuerpo = "";
+        try {
+            Connection.Response doc = Jsoup.connect(url).execute();
+            cuerpo = doc.body();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-        return document.html().split("/n").length;
+
+        return cuerpo.split("\n").length;
     }
 
     private static int cantidadParrafos() {
@@ -98,26 +107,32 @@ public class Main {
         cantidadGet = formElement.size();
         System.out.println("Cantidad de formularios con el metodo GET: " + cantidadGet);
 
-        Elements elements = document.select("form");
 
-        for (Element element:elements) {
+
+        for (Element element: document.getElementsByTag("form").forms()) {
             String metodo = element.attr("method");
-            System.out.println("Formulario: #"+form);
+            Elements tipoPost = element.getElementsByAttributeValueContaining("method", "post");
 
 
-            if (metodo.equalsIgnoreCase("post")){
+            for (Element el: tipoPost ) {
 
+                String dir = el.absUrl("action");
                 try{
-                    Document document1 = Jsoup.connect(url)
+                    System.out.println("Formulario: #"+form);
+                    Document document1 = Jsoup.connect(dir)
                             .data("asignatura","practica1")
                             .header("matricula","20140565").post();
 
-                    System.out.println(document1);
+                    System.out.println(document1.body().toString());
                 }catch (HttpStatusException e){
 
                 }
-
             }
+
+
+
+
+
 
             Elements inputs = element.select("input");
             for (Element element1: inputs) {
